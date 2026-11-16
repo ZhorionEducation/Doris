@@ -23,8 +23,8 @@ const IconChart = () => <Svg><path d="M4 20h16M7 20v-6M12 20V6M17 20v-9" /></Svg
 const procesos = [
   { nombre: 'Configuración', icono: <IconGear />, items: ['Privilegios', 'Permisos'] },
   { nombre: 'Usuarios', icono: <IconUsers />, items: ['Gestión de usuarios'] },
-  { nombre: 'Compras', icono: <IconBag />, items: ['Categoría de proveedores', 'Gestión de proveedores', 'Categorías de productos', 'Gestión de productos', 'Gestión de compras'] },
-  { nombre: 'Servicios', icono: <IconLeaf />, items: ['Categorías de servicios', 'Gestión de servicios', 'Ficha técnica', 'Insumos de servicios', 'Asignación de empleados', 'Agenda'] },
+  { nombre: 'Compras', icono: <IconBag />, items: ['Categoría de proveedores', 'Gestión de proveedores', 'Categorías de productos', 'Gestión de productos', 'Gestión de compras', 'Gestión de lotes'] },
+  { nombre: 'Servicios', icono: <IconLeaf />, items: ['Categorías de servicios', 'Gestión de servicios', 'Ficha técnica', 'Insumos de servicios', 'Asignación de empleados', 'Agenda', 'Gestión de alergias', 'Ficha técnica de alergias'] },
   { nombre: 'Ventas', icono: <IconCash />, items: ['Gestión de clientes', 'Gestión de cotizaciones', 'Gestión de pedidos', 'Gestión de ventas', 'Devoluciones y anulaciones'] },
   { nombre: 'Medición y Desempeño', icono: <IconChart />, items: ['Indicadores'] },
 ]
@@ -35,6 +35,10 @@ const rutas = {
   'Gestión de usuarios': '/usuarios',
   'Gestión de compras': '/compras',
   'Gestión de pedidos': '/pedidos',
+   'Gestión de lotes': '/lotes',
+   'Gestión de alergias': '/alergias',
+   'Ficha técnica de alergias': '/ficha-tecnica-alergias',
+   'Gestión de cotizaciones': '/cotizaciones',
 }
 
 const focus = 'focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-[#6B4FA8]'
