@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import Modal from '../../../routers/utils/modal'
 import { PedidoForm } from './pedidosForm'
+import { PedidosDetailModal } from './pedidosDetailModal'
+import { PedidoEdit } from './pedidosEditModal'
 
 // Datos de ejemplo: solo para que el diseño se vea con información
 const pedidos = [
@@ -43,16 +45,17 @@ const Estado = ({ estado }) => (
 )
 
 // Acciones: ver, editar y anular. size cambia entre escritorio y celular
-const Acciones = ({ size = 'h-9 w-9' }) => (
+const Acciones = ({ size = 'h-9 w-9', onView, onEdit }) => (
   <div className="flex gap-2">
-    <button type="button" title="Ver detalle" aria-label="Ver detalle" className={`${iconBtn} ${size}`}><IconEye /></button>
-    <button type="button" title="Editar" aria-label="Editar" className={`${iconBtn} ${size}`}><IconEdit /></button>
+    <button type="button" onClick={onView} title="Ver detalle" aria-label="Ver detalle" className={`${iconBtn} ${size}`}><IconEye /></button>
+    <button type="button" onClick={onEdit} title="Editar" aria-label="Editar" className={`${iconBtn} ${size}`}><IconEdit /></button>
     <button type="button" title="Anular" aria-label="Anular" className={`${iconBtn} ${size} !text-[#B3261E]`}><IconTrash /></button>
   </div>
 )
 
 export const Pedidos = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+  const [activeModal, setActiveModal] = useState(null)
 
   return (
     <section className="space-y-6 text-[15px] text-[#3D2C33]">
@@ -109,7 +112,7 @@ export const Pedidos = () => {
                   <td className={celda}>{p.vendedor}</td>
                   <td className={`${celda} text-right font-semibold tabular-nums`}>{p.total}</td>
                   <td className={celda}><Estado estado={p.estado} /></td>
-                  <td className={celda}><Acciones /></td>
+                  <td className={celda}><Acciones onView={() => setActiveModal('detail')} onEdit={() => setActiveModal('edit')} /></td>
                 </tr>
               ))}
             </tbody>
@@ -130,7 +133,7 @@ export const Pedidos = () => {
                 <dt className="text-[#6B5A64]">Vendedor</dt><dd className="text-right">{p.vendedor}</dd>
                 <dt className="text-[#6B5A64]">Total</dt><dd className="text-right font-semibold tabular-nums">{p.total}</dd>
               </dl>
-              <div className="flex justify-end"><Acciones size="h-11 w-11" /></div>
+              <div className="flex justify-end"><Acciones size="h-11 w-11" onView={() => setActiveModal('detail')} onEdit={() => setActiveModal('edit')} /></div>
             </article>
           ))}
         </div>
@@ -154,6 +157,12 @@ export const Pedidos = () => {
             onCancel={() => setIsCreateModalOpen(false)}
             onSaved={() => setIsCreateModalOpen(false)}
           />
+        </Modal>
+      )}
+      {activeModal === 'detail' && <PedidosDetailModal onClose={() => setActiveModal(null)} />}
+      {activeModal === 'edit' && (
+        <Modal title="Editar pedido" onClose={() => setActiveModal(null)}>
+          <PedidoEdit onCancel={() => setActiveModal(null)} onSaved={() => setActiveModal(null)} />
         </Modal>
       )}
     </section>
