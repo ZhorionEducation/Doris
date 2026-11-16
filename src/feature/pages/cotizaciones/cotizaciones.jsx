@@ -59,8 +59,17 @@ const calcularTotales = (items) => {
   };
 };
 
+// Cinco cotizaciones de prueba; conservan la misma estructura del formulario.
+const cotizacionesIniciales = [
+  { id: 1, usuario_id: "1", vendedor_id: "1", tipo_documento: "CC", numero_documento: "1001234567", fecha_documento: "2026-11-10", observaciones: "Cotización de cuidado facial.", estado: "Pendiente", nombre_usuario: "María González", items: [{ uid: "demo-1", producto_id: 1, servicio_id: null, tipo: "producto", nombre: "Sérum facial", cantidad: 2, valor_unitario: 65000 }] },
+  { id: 2, usuario_id: "2", vendedor_id: "2", tipo_documento: "CC", numero_documento: "1007654321", fecha_documento: "2026-11-11", observaciones: "Servicio de limpieza facial.", estado: "Aprobada", nombre_usuario: "Carlos Ramírez", items: [{ uid: "demo-2", producto_id: null, servicio_id: 1, tipo: "servicio", nombre: "Limpieza facial", cantidad: 1, valor_unitario: 90000 }] },
+  { id: 3, usuario_id: "1", vendedor_id: "2", tipo_documento: "CC", numero_documento: "1001234567", fecha_documento: "2026-11-12", observaciones: "Productos para rutina diaria.", estado: "Pendiente", nombre_usuario: "María González", items: [{ uid: "demo-3a", producto_id: 2, servicio_id: null, tipo: "producto", nombre: "Crema hidratante", cantidad: 1, valor_unitario: 45000 }, { uid: "demo-3b", producto_id: 3, servicio_id: null, tipo: "producto", nombre: "Protector solar", cantidad: 1, valor_unitario: 55000 }] },
+  { id: 4, usuario_id: "2", vendedor_id: "1", tipo_documento: "CC", numero_documento: "1007654321", fecha_documento: "2026-11-13", observaciones: "Tratamiento de hidratación.", estado: "Rechazada", nombre_usuario: "Carlos Ramírez", items: [{ uid: "demo-4", producto_id: null, servicio_id: 2, tipo: "servicio", nombre: "Tratamiento hidratante", cantidad: 1, valor_unitario: 120000 }] },
+  { id: 5, usuario_id: "1", vendedor_id: "1", tipo_documento: "CC", numero_documento: "1001234567", fecha_documento: "2026-11-14", observaciones: "Paquete de productos y servicio.", estado: "Aprobada", nombre_usuario: "María González", items: [{ uid: "demo-5a", producto_id: 3, servicio_id: null, tipo: "producto", nombre: "Protector solar", cantidad: 2, valor_unitario: 55000 }, { uid: "demo-5b", producto_id: null, servicio_id: 1, tipo: "servicio", nombre: "Limpieza facial", cantidad: 1, valor_unitario: 90000 }] },
+].map((cotizacion) => ({ ...cotizacion, ...calcularTotales(cotizacion.items) }));
+
 export const Cotizaciones = () => {
-  const [cotizaciones, setCotizaciones] = useState([]);
+  const [cotizaciones, setCotizaciones] = useState(cotizacionesIniciales);
   const [busqueda, setBusqueda] = useState("");
   const [filtro, setFiltro] = useState("Todos");
   const [modalAbierto, setModalAbierto] = useState(false);
@@ -239,20 +248,20 @@ export const Cotizaciones = () => {
   ).length;
 
   return (
-    <main className="min-h-screen bg-pink-50 p-5 text-gray-900 md:p-8">
+    <main className="min-h-screen bg-[#FFF9FB] p-4 text-[#3D2C33] sm:p-6 lg:p-8">
 
       {/* ENCABEZADO */}
-      <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
+      <div className="mb-7 flex flex-wrap items-center justify-between gap-5 rounded-2xl border border-[#F4D4E0] bg-white p-6 shadow-sm">
         <div>
-          <p className="text-sm text-gray-500">
+          <p className="text-xs font-semibold uppercase tracking-widest text-[#B83A6E]">
             Ventas / Gestión de cotizaciones
           </p>
 
-          <h1 className="mt-2 text-3xl font-bold">
+          <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-[#3D2C33]">
             Gestión de cotizaciones
           </h1>
 
-          <p className="mt-2 text-gray-600">
+          <p className="mt-2 text-sm text-[#806A75]">
             Registra cotizaciones de productos y servicios.
           </p>
         </div>
@@ -260,31 +269,31 @@ export const Cotizaciones = () => {
         <button
           type="button"
           onClick={abrirNuevo}
-          className="rounded-xl bg-pink-600 px-5 py-3 font-semibold text-white shadow-sm hover:bg-pink-700"
+          className="rounded-xl bg-[#B83A6E] px-5 py-3 font-semibold text-white shadow-sm transition hover:bg-[#9E2E5D] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B83A6E]"
         >
           + Nueva cotización
         </button>
       </div>
 
       {/* ESTADÍSTICAS */}
-      <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-3">
+      <div className="mb-7 grid grid-cols-1 gap-4 sm:grid-cols-3">
 
-        <div className="rounded-2xl border border-pink-200 bg-white p-6 shadow-sm">
-          <p className="text-gray-500">Total de cotizaciones</p>
-          <h2 className="mt-2 text-3xl font-bold">
+        <div className="rounded-2xl border border-[#F4D4E0] bg-white p-5 shadow-sm sm:p-6">
+          <p className="text-sm font-medium text-[#806A75]">Total de cotizaciones</p>
+          <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-[#3D2C33]">
             {totalCotizaciones}
           </h2>
         </div>
 
-        <div className="rounded-2xl border border-pink-200 bg-white p-6 shadow-sm">
-          <p className="text-gray-500">Pendientes</p>
-          <h2 className="mt-2 text-3xl font-bold text-yellow-600">
+        <div className="rounded-2xl border border-[#F4D4E0] bg-white p-5 shadow-sm sm:p-6">
+          <p className="text-sm font-medium text-[#806A75]">Pendientes</p>
+          <h2 className="mt-2 text-3xl font-bold text-amber-600">
             {pendientes}
           </h2>
         </div>
 
-        <div className="rounded-2xl border border-pink-200 bg-white p-6 shadow-sm">
-          <p className="text-gray-500">Aprobadas</p>
+        <div className="rounded-2xl border border-[#F4D4E0] bg-white p-5 shadow-sm sm:p-6">
+          <p className="text-sm font-medium text-[#806A75]">Aprobadas</p>
           <h2 className="mt-2 text-3xl font-bold text-green-700">
             {aprobadas}
           </h2>
@@ -292,10 +301,10 @@ export const Cotizaciones = () => {
       </div>
 
       {/* LISTADO */}
-      <section className="overflow-hidden rounded-2xl border border-pink-200 bg-white shadow-sm">
+      <section className="overflow-hidden rounded-2xl border border-[#F4D4E0] bg-white shadow-sm">
 
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-pink-200 p-5">
-          <h2 className="text-xl font-bold">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#F4D4E0] bg-[#FFFBFD] p-5">
+          <h2 className="text-xl font-bold text-[#3D2C33]">
             Listado de cotizaciones
           </h2>
 
@@ -305,13 +314,13 @@ export const Cotizaciones = () => {
               placeholder="Buscar cotización..."
               value={busqueda}
               onChange={(e) => setBusqueda(e.target.value)}
-              className="rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-pink-500"
+              className="w-full rounded-xl border border-[#EBCBD8] bg-white px-4 py-3 text-sm outline-none transition focus:border-[#B83A6E] focus:ring-2 focus:ring-[#F4D4E0] sm:w-64"
             />
 
             <select
               value={filtro}
               onChange={(e) => setFiltro(e.target.value)}
-              className="rounded-lg border border-gray-300 px-4 py-3"
+              className="rounded-xl border border-[#EBCBD8] bg-white px-4 py-3 text-sm outline-none focus:border-[#B83A6E]"
             >
               <option value="Todos">Todos</option>
               <option value="Pendiente">Pendientes</option>
@@ -322,8 +331,8 @@ export const Cotizaciones = () => {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[900px] text-left text-sm">
-            <thead className="bg-pink-100">
+          <table className="w-full min-w-[1000px] text-left text-sm">
+            <thead className="bg-[#FCE8F0] text-[#694353]">
               <tr>
                 <th className="p-4">ID</th>
                 <th className="p-4">Cliente</th>
@@ -341,7 +350,7 @@ export const Cotizaciones = () => {
               {cotizacionesFiltradas.map((cotizacion) => (
                 <tr
                   key={cotizacion.id}
-                  className="border-t border-gray-200 hover:bg-pink-50"
+                  className="border-t border-[#F7E5EC] transition hover:bg-[#FFF5F9]"
                 >
                   <td className="p-4">{cotizacion.id}</td>
                   <td className="p-4">{cotizacion.nombre_usuario}</td>
@@ -349,7 +358,7 @@ export const Cotizaciones = () => {
                   <td className="p-4">{cotizacion.fecha_documento}</td>
                   <td className="p-4">{formatoCOP(cotizacion.subtotal)}</td>
                   <td className="p-4">{formatoCOP(cotizacion.iva)}</td>
-                  <td className="p-4 font-bold">
+                  <td className="p-4 font-bold text-[#B83A6E]">
                     {formatoCOP(cotizacion.total)}
                   </td>
 
@@ -372,7 +381,7 @@ export const Cotizaciones = () => {
                       <button
                         type="button"
                         onClick={() => abrirEditar(cotizacion)}
-                        className="rounded-lg border border-pink-500 px-3 py-2 text-pink-700 hover:bg-pink-50"
+                        className="rounded-lg border border-[#E9A9C2] bg-[#FFF5F9] px-3 py-2 font-semibold text-[#B83A6E] transition hover:bg-[#FCE3EC]"
                       >
                         Editar
                       </button>
@@ -380,7 +389,7 @@ export const Cotizaciones = () => {
                       <button
                         type="button"
                         onClick={() => eliminarCotizacion(cotizacion.id)}
-                        className="rounded-lg border border-red-500 px-3 py-2 text-red-600 hover:bg-red-50"
+                        className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 font-semibold text-red-600 transition hover:bg-red-100"
                       >
                         Eliminar
                       </button>
@@ -406,16 +415,16 @@ export const Cotizaciones = () => {
 
       {/* MODAL DE COTIZACIÓN */}
       {modalAbierto && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#2B1722]/60 p-3 backdrop-blur-[2px] sm:p-5">
 
           <div
             role="dialog"
             aria-modal="true"
             aria-labelledby="titulo-cotizacion"
-            className="max-h-[92vh] w-full max-w-5xl overflow-y-auto rounded-2xl bg-white p-6 shadow-xl"
+            className="max-h-[92vh] w-full max-w-5xl overflow-y-auto rounded-2xl border border-[#F4D4E0] bg-white p-5 shadow-2xl sm:p-7"
           >
-            <div className="mb-6 flex items-center justify-between">
-              <h2 id="titulo-cotizacion" className="text-2xl font-bold">
+            <div className="mb-6 flex items-center justify-between border-b border-[#F4D4E0] pb-4">
+              <h2 id="titulo-cotizacion" className="text-2xl font-bold text-[#3D2C33]">
                 {editando !== null
                   ? "Editar cotización"
                   : "Nueva cotización"}
@@ -425,7 +434,7 @@ export const Cotizaciones = () => {
                 type="button"
                 aria-label="Cerrar formulario"
                 onClick={() => setModalAbierto(false)}
-                className="text-2xl text-gray-500 hover:text-red-600"
+                className="grid h-9 w-9 place-items-center rounded-lg bg-[#FFF1F6] text-2xl text-[#B83A6E] transition hover:bg-[#F4D4E0]"
               >
                 ×
               </button>
@@ -436,14 +445,14 @@ export const Cotizaciones = () => {
               {/* DATOS PRINCIPALES */}
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 
-                <label className="block text-sm font-semibold">
+                <label className="block text-sm font-semibold text-[#694353]">
                   Cliente / Usuario
                   <select
                     name="usuario_id"
                     value={formulario.usuario_id}
                     onChange={cambiarCampo}
                     required
-                    className="mt-2 w-full rounded-lg border border-gray-300 p-3"
+                    className="mt-2 w-full rounded-xl border border-[#EBCBD8] bg-white p-3 text-[#3D2C33] outline-none transition focus:border-[#B83A6E] focus:ring-2 focus:ring-[#F4D4E0]"
                   >
                     <option value="">Seleccionar cliente</option>
 
@@ -455,14 +464,14 @@ export const Cotizaciones = () => {
                   </select>
                 </label>
 
-                <label className="block text-sm font-semibold">
+                <label className="block text-sm font-semibold text-[#694353]">
                   Vendedor
                   <select
                     name="vendedor_id"
                     value={formulario.vendedor_id}
                     onChange={cambiarCampo}
                     required
-                    className="mt-2 w-full rounded-lg border border-gray-300 p-3"
+                    className="mt-2 w-full rounded-xl border border-[#EBCBD8] bg-white p-3 text-[#3D2C33] outline-none transition focus:border-[#B83A6E] focus:ring-2 focus:ring-[#F4D4E0]"
                   >
                     <option value="">Seleccionar vendedor</option>
 
@@ -474,13 +483,13 @@ export const Cotizaciones = () => {
                   </select>
                 </label>
 
-                <label className="block text-sm font-semibold">
+                <label className="block text-sm font-semibold text-[#694353]">
                   Tipo de documento
                   <select
                     name="tipo_documento"
                     value={formulario.tipo_documento}
                     onChange={cambiarCampo}
-                    className="mt-2 w-full rounded-lg border border-gray-300 p-3"
+                    className="mt-2 w-full rounded-xl border border-[#EBCBD8] bg-white p-3 text-[#3D2C33] outline-none transition focus:border-[#B83A6E] focus:ring-2 focus:ring-[#F4D4E0]"
                   >
                     <option value="CC">Cédula de ciudadanía</option>
                     <option value="CE">Cédula de extranjería</option>
@@ -488,7 +497,7 @@ export const Cotizaciones = () => {
                   </select>
                 </label>
 
-                <label className="block text-sm font-semibold">
+                <label className="block text-sm font-semibold text-[#694353]">
                   Número de documento
                   <input
                     type="text"
@@ -496,11 +505,11 @@ export const Cotizaciones = () => {
                     value={formulario.numero_documento}
                     onChange={cambiarCampo}
                     required
-                    className="mt-2 w-full rounded-lg border border-gray-300 p-3"
+                    className="mt-2 w-full rounded-xl border border-[#EBCBD8] bg-white p-3 text-[#3D2C33] outline-none transition focus:border-[#B83A6E] focus:ring-2 focus:ring-[#F4D4E0]"
                   />
                 </label>
 
-                <label className="block text-sm font-semibold">
+                <label className="block text-sm font-semibold text-[#694353]">
                   Fecha de cotización
                   <input
                     type="date"
@@ -508,17 +517,17 @@ export const Cotizaciones = () => {
                     value={formulario.fecha_documento}
                     onChange={cambiarCampo}
                     required
-                    className="mt-2 w-full rounded-lg border border-gray-300 p-3"
+                    className="mt-2 w-full rounded-xl border border-[#EBCBD8] bg-white p-3 text-[#3D2C33] outline-none transition focus:border-[#B83A6E] focus:ring-2 focus:ring-[#F4D4E0]"
                   />
                 </label>
 
-                <label className="block text-sm font-semibold">
+                <label className="block text-sm font-semibold text-[#694353]">
                   Estado
                   <select
                     name="estado"
                     value={formulario.estado}
                     onChange={cambiarCampo}
-                    className="mt-2 w-full rounded-lg border border-gray-300 p-3"
+                    className="mt-2 w-full rounded-xl border border-[#EBCBD8] bg-white p-3 text-[#3D2C33] outline-none transition focus:border-[#B83A6E] focus:ring-2 focus:ring-[#F4D4E0]"
                   >
                     <option value="Pendiente">Pendiente</option>
                     <option value="Aprobada">Aprobada</option>
@@ -528,8 +537,8 @@ export const Cotizaciones = () => {
               </div>
 
               {/* DETALLE DE PRODUCTOS Y SERVICIOS */}
-              <div className="rounded-xl border border-pink-200 p-5">
-                <h3 className="mb-4 text-lg font-bold">
+              <div className="rounded-2xl border border-[#F4D4E0] bg-[#FFFBFD] p-5">
+                <h3 className="mb-4 text-lg font-bold text-[#3D2C33]">
                   Productos y servicios
                 </h3>
 
@@ -541,7 +550,7 @@ export const Cotizaciones = () => {
                       setTipoItem(e.target.value);
                       setItemSeleccionado("");
                     }}
-                    className="rounded-lg border border-gray-300 p-3"
+                    className="rounded-xl border border-[#EBCBD8] bg-white p-3 outline-none focus:border-[#B83A6E]"
                   >
                     <option value="producto">Producto</option>
                     <option value="servicio">Servicio</option>
@@ -550,7 +559,7 @@ export const Cotizaciones = () => {
                   <select
                     value={itemSeleccionado}
                     onChange={(e) => setItemSeleccionado(e.target.value)}
-                    className="rounded-lg border border-gray-300 p-3 md:col-span-1"
+                    className="rounded-xl border border-[#EBCBD8] bg-white p-3 outline-none focus:border-[#B83A6E] md:col-span-1"
                   >
                     <option value="">Seleccionar</option>
 
@@ -568,13 +577,13 @@ export const Cotizaciones = () => {
                     value={cantidad}
                     onChange={(e) => setCantidad(e.target.value)}
                     placeholder="Cantidad"
-                    className="rounded-lg border border-gray-300 p-3"
+                    className="rounded-xl border border-[#EBCBD8] bg-white p-3 outline-none focus:border-[#B83A6E]"
                   />
 
                   <button
                     type="button"
                     onClick={agregarItem}
-                    className="rounded-lg bg-pink-600 px-4 py-3 font-semibold text-white hover:bg-pink-700"
+                    className="rounded-xl bg-[#B83A6E] px-4 py-3 font-semibold text-white transition hover:bg-[#9E2E5D]"
                   >
                     + Agregar
                   </button>
@@ -582,7 +591,7 @@ export const Cotizaciones = () => {
 
                 <div className="mt-5 overflow-x-auto">
                   <table className="w-full min-w-[650px] text-left text-sm">
-                    <thead className="bg-pink-100">
+                    <thead className="bg-[#FCE8F0] text-[#694353]">
                       <tr>
                         <th className="p-3">Tipo</th>
                         <th className="p-3">Descripción</th>
@@ -595,7 +604,7 @@ export const Cotizaciones = () => {
 
                     <tbody>
                       {formulario.items.map((item) => (
-                        <tr key={item.uid} className="border-t">
+                        <tr key={item.uid} className="border-t border-[#F4D4E0]">
                           <td className="p-3 capitalize">
                             {item.tipo}
                           </td>
@@ -637,7 +646,7 @@ export const Cotizaciones = () => {
               </div>
 
               {/* TOTALES */}
-              <div className="ml-auto max-w-sm space-y-3 rounded-xl bg-pink-50 p-5">
+              <div className="ml-auto max-w-sm space-y-3 rounded-2xl border border-[#F4D4E0] bg-[#FFF3F8] p-5">
 
                 <div className="flex justify-between">
                   <span>Subtotal:</span>
@@ -653,38 +662,38 @@ export const Cotizaciones = () => {
                   </strong>
                 </div>
 
-                <div className="flex justify-between border-t border-pink-200 pt-3 text-xl">
+                <div className="flex justify-between border-t border-[#E9A9C2] pt-3 text-xl">
                   <strong>Total:</strong>
-                  <strong className="text-pink-700">
+                  <strong className="text-[#B83A6E]">
                     {formatoCOP(totalesFormulario.total)}
                   </strong>
                 </div>
               </div>
 
-              <label className="block text-sm font-semibold">
+              <label className="block text-sm font-semibold text-[#694353]">
                 Observaciones
                 <textarea
                   name="observaciones"
                   value={formulario.observaciones}
                   onChange={cambiarCampo}
                   rows="3"
-                  className="mt-2 w-full rounded-lg border border-gray-300 p-3"
+                  className="mt-2 w-full rounded-xl border border-[#EBCBD8] bg-white p-3 text-[#3D2C33] outline-none transition focus:border-[#B83A6E] focus:ring-2 focus:ring-[#F4D4E0]"
                 />
               </label>
 
               {/* BOTONES */}
-              <div className="flex justify-end gap-3 border-t pt-5">
+              <div className="flex flex-wrap justify-end gap-3 border-t border-[#F4D4E0] pt-5">
                 <button
                   type="button"
                   onClick={() => setModalAbierto(false)}
-                  className="rounded-lg border border-gray-300 px-5 py-3 hover:bg-gray-100"
+                  className="rounded-xl border border-[#EBCBD8] px-5 py-3 font-semibold text-[#694353] transition hover:bg-[#FFF1F6]"
                 >
                   Cancelar
                 </button>
 
                 <button
                   type="submit"
-                  className="rounded-lg bg-pink-600 px-5 py-3 font-semibold text-white hover:bg-pink-700"
+                  className="rounded-xl bg-[#B83A6E] px-5 py-3 font-semibold text-white transition hover:bg-[#9E2E5D]"
                 >
                   {editando !== null
                     ? "Guardar cambios"

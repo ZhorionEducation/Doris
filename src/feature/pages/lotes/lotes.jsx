@@ -31,6 +31,48 @@ const datosIniciales = [
     observaciones: "",
     estado: "Activo",
   },
+  {
+    id: 3,
+    producto_id: "3",
+    producto: "Aceite corporal",
+    proveedor_id: "1",
+    proveedor: "Belleza Natural",
+    codigo_lote: "LOT-003",
+    fecha_fabricacion: "2026-03-12",
+    fecha_vencimiento: "2027-03-12",
+    cantidad_inicial: 40,
+    cantidad_disponible: 35,
+    observaciones: "Almacenar en lugar fresco y seco.",
+    estado: "Activo",
+  },
+  {
+    id: 4,
+    producto_id: "1",
+    producto: "Serum facial",
+    proveedor_id: "2",
+    proveedor: "Cosméticos Doris",
+    codigo_lote: "LOT-004",
+    fecha_fabricacion: "2026-04-08",
+    fecha_vencimiento: "2027-04-08",
+    cantidad_inicial: 60,
+    cantidad_disponible: 42,
+    observaciones: "Revisar el sello antes de distribuir.",
+    estado: "Activo",
+  },
+  {
+    id: 5,
+    producto_id: "2",
+    producto: "Crema hidratante",
+    proveedor_id: "1",
+    proveedor: "Belleza Natural",
+    codigo_lote: "LOT-005",
+    fecha_fabricacion: "2026-05-20",
+    fecha_vencimiento: "2027-05-20",
+    cantidad_inicial: 25,
+    cantidad_disponible: 18,
+    observaciones: "Mantener el envase cerrado.",
+    estado: "Inactivo",
+  },
 ];
 
 const productos = [
@@ -55,6 +97,32 @@ const formularioVacio = {
   observaciones: "",
   estado: "Activo",
 };
+
+// Iconos de línea usados en Gestión de compras.
+const Svg = ({ children, className = "h-5 w-5" }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
+    strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true">
+    {children}
+  </svg>
+);
+const IconPlus = () => <Svg><path d="M12 5v14M5 12h14" /></Svg>;
+const IconEdit = () => <Svg><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z" /></Svg>;
+const IconTrash = () => <Svg><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14" /></Svg>;
+const IconSearch = () => <Svg><circle cx="11" cy="11" r="7" /><path d="M20 20l-4-4" /></Svg>;
+const IconCheck = () => <Svg className="h-3.5 w-3.5"><circle cx="12" cy="12" r="9" /><path d="M8 12l3 3 5-6" /></Svg>;
+const IconInactive = () => <Svg className="h-3.5 w-3.5"><circle cx="12" cy="12" r="9" /><path d="M9 9l6 6M15 9l-6 6" /></Svg>;
+
+const focus = "focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-[#6B4FA8]";
+const control = `rounded-[10px] border-[1.5px] border-[#D9BCC8] bg-white px-3 py-2.5 text-[15px] text-[#3D2C33] ${focus}`;
+const iconBtn = `grid h-9 w-9 place-items-center rounded-[10px] border border-[#F4D4E0] bg-white text-[#B83A6E] hover:bg-[#F4D4E0] ${focus}`;
+const celda = "whitespace-nowrap border-b border-[#F4D4E0] px-4 py-3";
+const EstadoLote = ({ estado }) => (
+  <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[13px] font-semibold ${
+    estado === "Activo" ? "bg-[#E3F3EA] text-[#1F5A43]" : "bg-[#FCE4E7] text-[#8E1F2B]"
+  }`}>
+    {estado === "Activo" ? <IconCheck /> : <IconInactive />} {estado}
+  </span>
+);
 
 export const Lotes = () => {
   const [lotes, setLotes] = useState(datosIniciales);
@@ -211,183 +279,124 @@ export const Lotes = () => {
   ).length;
 
   return (
-    <main className="min-h-screen bg-doris-bg p-4 text-doris-text md:p-8">
+    <section className="space-y-6 text-[15px] text-[#3D2C33]">
+      {/* Encabezado idéntico en estilo a Gestión de compras */}
+      <header>
+        <p className="text-[13px] text-[#6B5A64]">Inicio › Compras › Gestión de lotes</p>
+        <h1 className="text-2xl font-bold leading-tight md:text-[28px]">Gestión de lotes</h1>
+        <p className="mt-1 max-w-[70ch] text-[#6B5A64]">
+          Controla los productos, cantidades y fechas de vencimiento.
+        </p>
+      </header>
 
-      {/* ENCABEZADO */}
-      <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <p className="mb-2 text-sm text-doris-muted">
-            Inventario / Gestión de lotes
-          </p>
-
-          <h1 className="text-3xl font-bold">
-            Gestión de lotes
-          </h1>
-
-          <p className="mt-2 text-doris-muted">
-            Controla los productos, cantidades y fechas de vencimiento.
-          </p>
+      {/* Estadísticas originales, conservadas */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div className="rounded-xl border border-[#F4D4E0] bg-white p-5">
+          <p className="text-sm text-[#6B5A64]">Total de lotes</p>
+          <h2 className="mt-2 text-3xl font-bold">{totalLotes}</h2>
         </div>
-
-        <button
-          type="button"
-          onClick={nuevoLote}
-          className="rounded-xl bg-doris px-5 py-3 font-semibold text-white shadow-sm transition hover:bg-doris-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-doris-purple"
-        >
-          + Nuevo lote
-        </button>
-      </div>
-
-      {/* TARJETAS DE RESUMEN */}
-      <div className="mb-7 grid grid-cols-1 gap-4 sm:grid-cols-3">
-
-        <div className="rounded-2xl border border-doris-border bg-white p-5 shadow-sm">
-          <p className="text-sm text-doris-muted">
-            Total de lotes
-          </p>
-          <h2 className="mt-2 text-3xl font-bold">
-            {totalLotes}
-          </h2>
+        <div className="rounded-xl border border-[#F4D4E0] bg-white p-5">
+          <p className="text-sm text-[#6B5A64]">Lotes activos</p>
+          <h2 className="mt-2 text-3xl font-bold text-[#1F5A43]">{lotesActivos}</h2>
         </div>
-
-        <div className="rounded-2xl border border-doris-border bg-white p-5 shadow-sm">
-          <p className="text-sm text-doris-muted">
-            Lotes activos
-          </p>
-          <h2 className="mt-2 text-3xl font-bold text-doris-green">
-            {lotesActivos}
-          </h2>
-        </div>
-
-        <div className="rounded-2xl border border-doris-border bg-white p-5 shadow-sm">
-          <p className="text-sm text-doris-muted">
-            Lotes vencidos
-          </p>
-          <h2 className="mt-2 text-3xl font-bold text-red-700">
-            {lotesVencidos}
-          </h2>
+        <div className="rounded-xl border border-[#F4D4E0] bg-white p-5">
+          <p className="text-sm text-[#6B5A64]">Lotes vencidos</p>
+          <h2 className="mt-2 text-3xl font-bold text-[#8E1F2B]">{lotesVencidos}</h2>
         </div>
       </div>
 
-      {/* TABLA */}
-      <section className="overflow-hidden rounded-2xl border border-doris-border bg-white shadow-sm">
-
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-doris-border p-5">
-          <h2 className="text-xl font-semibold">
-            Listado de lotes
-          </h2>
-
-          <div className="flex flex-wrap gap-3">
-            <input
-              type="search"
-              placeholder="Buscar lote..."
-              value={busqueda}
+      <div className="rounded-xl border border-[#F4D4E0] bg-white">
+        {/* Barra de herramientas */}
+        <div className="flex flex-wrap gap-3 border-b border-[#F4D4E0] p-4">
+          <div className="relative min-w-[200px] flex-1">
+            <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#6B5A64]"><IconSearch /></span>
+            <input type="search" placeholder="Buscar lote, producto o proveedor"
+              aria-label="Buscar lotes" value={busqueda}
               onChange={(e) => setBusqueda(e.target.value)}
-              className="rounded-lg border border-doris-border bg-white px-4 py-2 outline-none focus:border-doris-purple focus:ring-2 focus:ring-doris-purple/20"
-            />
-
-            <select
-              value={filtroEstado}
-              onChange={(e) => setFiltroEstado(e.target.value)}
-              className="rounded-lg border border-doris-border bg-white px-4 py-2 outline-none focus:border-doris-purple"
-            >
-              <option value="Todos">Todos</option>
-              <option value="Activo">Activos</option>
-              <option value="Inactivo">Inactivos</option>
-            </select>
+              className={`w-full pl-10 ${control}`} />
           </div>
+          <select aria-label="Filtrar por estado" value={filtroEstado}
+            onChange={(e) => setFiltroEstado(e.target.value)} className={control}>
+            <option value="Todos">Estado: Todos</option>
+            <option value="Activo">Activos</option>
+            <option value="Inactivo">Inactivos</option>
+          </select>
+          <button type="button" onClick={nuevoLote}
+            className={`inline-flex items-center gap-2 rounded-[10px] bg-[#B83A6E] px-4 py-2.5 text-sm font-semibold text-white hover:brightness-90 ${focus}`}>
+            <IconPlus /> Nuevo lote
+          </button>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[950px] text-left text-sm">
-            <thead className="bg-doris-soft text-doris-text">
-              <tr>
-                <th className="p-4">Código</th>
-                <th className="p-4">Producto</th>
-                <th className="p-4">Proveedor</th>
-                <th className="p-4">Fabricación</th>
-                <th className="p-4">Vencimiento</th>
-                <th className="p-4">Disponible</th>
-                <th className="p-4">Estado</th>
-                <th className="p-4">Acciones</th>
+        {/* Tabla para escritorio */}
+        <div className="hidden overflow-x-auto md:block">
+          <table className="w-full border-collapse text-left">
+            <thead>
+              <tr className="text-[13px] font-semibold text-[#6B5A64]">
+                {['Código', 'Producto', 'Proveedor', 'Fabricación', 'Vencimiento', 'Disponible', 'Estado', 'Acciones'].map((titulo) => (
+                  <th key={titulo} className="border-b border-[#F4D4E0] px-4 py-3">{titulo}</th>
+                ))}
               </tr>
             </thead>
-
             <tbody>
               {lotesFiltrados.map((lote) => (
-                <tr
-                  key={lote.id}
-                  className="border-t border-doris-border transition hover:bg-doris-bg"
-                >
-                  <td className="p-4 font-semibold">
-                    {lote.codigo_lote}
-                  </td>
-
-                  <td className="p-4">{lote.producto}</td>
-                  <td className="p-4">{lote.proveedor}</td>
-                  <td className="p-4">{lote.fecha_fabricacion}</td>
-                  <td className="p-4">{lote.fecha_vencimiento}</td>
-                  <td className="p-4">
-                    {lote.cantidad_disponible}
-                  </td>
-
-                  <td className="p-4">
-                    <span
-                      className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                        lote.estado === "Activo"
-                          ? "bg-green-100 text-green-800"
-                          : "bg-gray-200 text-gray-700"
-                      }`}
-                    >
-                      {lote.estado}
-                    </span>
-                  </td>
-
-                  <td className="p-4">
+                <tr key={lote.id} className="hover:bg-[#FDF6F8]">
+                  <td className={celda}><code className="rounded-md bg-[#F4D4E0] px-1.5 py-0.5 font-mono text-[13px]">{lote.codigo_lote}</code></td>
+                  <td className={`${celda} font-semibold`}>{lote.producto}</td>
+                  <td className={celda}>{lote.proveedor}</td>
+                  <td className={celda}>{lote.fecha_fabricacion}</td>
+                  <td className={celda}>{lote.fecha_vencimiento}</td>
+                  <td className={`${celda} tabular-nums`}>{lote.cantidad_disponible}</td>
+                  <td className={celda}><EstadoLote estado={lote.estado} /></td>
+                  <td className={celda}>
                     <div className="flex gap-2">
-                      <button
-                        type="button"
-                        onClick={() => editarLote(lote)}
-                        className="rounded-lg border border-doris px-3 py-2 font-medium text-doris hover:bg-doris-soft"
-                      >
-                        Editar
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => eliminarLote(lote.id)}
-                        className="rounded-lg border border-red-600 px-3 py-2 font-medium text-red-700 hover:bg-red-50"
-                      >
-                        Eliminar
-                      </button>
+                      <button type="button" onClick={() => editarLote(lote)} title="Editar" aria-label={`Editar lote ${lote.codigo_lote}`} className={iconBtn}><IconEdit /></button>
+                      <button type="button" onClick={() => eliminarLote(lote.id)} title="Eliminar" aria-label={`Eliminar lote ${lote.codigo_lote}`} className={`${iconBtn} !text-[#B3261E]`}><IconTrash /></button>
                     </div>
                   </td>
                 </tr>
               ))}
-
               {lotesFiltrados.length === 0 && (
-                <tr>
-                  <td
-                    colSpan="8"
-                    className="p-10 text-center text-doris-muted"
-                  >
-                    No se encontraron lotes.
-                  </td>
-                </tr>
+                <tr><td colSpan="8" className="p-10 text-center text-[#6B5A64]">No se encontraron lotes.</td></tr>
               )}
             </tbody>
           </table>
         </div>
-      </section>
+
+        {/* Tarjetas para celulares, como en Gestión de compras */}
+        <div className="space-y-3 p-3 md:hidden">
+          {lotesFiltrados.map((lote) => (
+            <article key={lote.id} className="rounded-xl border border-[#F4D4E0] bg-white p-3.5">
+              <header className="mb-2 flex items-center justify-between gap-2 font-bold">
+                <span>{lote.codigo_lote}</span><EstadoLote estado={lote.estado} />
+              </header>
+              <dl className="mb-3 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-sm">
+                <dt className="text-[#6B5A64]">Producto</dt><dd className="text-right">{lote.producto}</dd>
+                <dt className="text-[#6B5A64]">Proveedor</dt><dd className="text-right">{lote.proveedor}</dd>
+                <dt className="text-[#6B5A64]">Fabricación</dt><dd className="text-right">{lote.fecha_fabricacion}</dd>
+                <dt className="text-[#6B5A64]">Vencimiento</dt><dd className="text-right">{lote.fecha_vencimiento}</dd>
+                <dt className="text-[#6B5A64]">Disponible</dt><dd className="text-right font-semibold">{lote.cantidad_disponible}</dd>
+              </dl>
+              <div className="flex justify-end gap-2">
+                <button type="button" onClick={() => editarLote(lote)} title="Editar" aria-label={`Editar lote ${lote.codigo_lote}`} className={`${iconBtn} !h-11 !w-11`}><IconEdit /></button>
+                <button type="button" onClick={() => eliminarLote(lote.id)} title="Eliminar" aria-label={`Eliminar lote ${lote.codigo_lote}`} className={`${iconBtn} !h-11 !w-11 !text-[#B3261E]`}><IconTrash /></button>
+              </div>
+            </article>
+          ))}
+          {lotesFiltrados.length === 0 && <p className="py-8 text-center text-[#6B5A64]">No se encontraron lotes.</p>}
+        </div>
+        <div className="border-t border-[#F4D4E0] p-4 text-sm text-[#6B5A64]">
+          Mostrando {lotesFiltrados.length} de {lotes.length} lotes
+        </div>
+      </div>
 
       {/* MODAL DE REGISTRO Y EDICIÓN */}
       {modalAbierto && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-doris-text/70 p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#3D2C33]/70 p-4">
           <div
             role="dialog"
             aria-modal="true"
             aria-labelledby="titulo-lote"
-            className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl md:p-8"
+            className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-xl border border-[#F4D4E0] bg-white p-6 shadow-2xl md:p-8"
           >
             <div className="mb-6 flex items-center justify-between gap-4">
               <h2
@@ -403,7 +412,7 @@ export const Lotes = () => {
                 type="button"
                 aria-label="Cerrar formulario"
                 onClick={() => setModalAbierto(false)}
-                className="text-2xl text-doris-muted hover:text-doris"
+                className="text-2xl text-[#6B5A64] hover:text-[#B83A6E]"
               >
                 ×
               </button>
@@ -428,7 +437,7 @@ export const Lotes = () => {
                     value={formulario.producto_id}
                     onChange={manejarCambio}
                     required
-                    className="rounded-lg border border-doris-border p-3 font-normal"
+                    className="rounded-[10px] border-[1.5px] border-[#D9BCC8] bg-white p-3 font-normal text-[#3D2C33]"
                   >
                     <option value="">Seleccionar producto</option>
                     {productos.map((producto) => (
@@ -446,7 +455,7 @@ export const Lotes = () => {
                     value={formulario.proveedor_id}
                     onChange={manejarCambio}
                     required
-                    className="rounded-lg border border-doris-border p-3 font-normal"
+                    className="rounded-[10px] border-[1.5px] border-[#D9BCC8] bg-white p-3 font-normal text-[#3D2C33]"
                   >
                     <option value="">Seleccionar proveedor</option>
                     {proveedores.map((proveedor) => (
@@ -465,7 +474,7 @@ export const Lotes = () => {
                     onChange={manejarCambio}
                     placeholder="Ej: LOT-003"
                     required
-                    className="rounded-lg border border-doris-border p-3 font-normal"
+                    className="rounded-[10px] border-[1.5px] border-[#D9BCC8] bg-white p-3 font-normal text-[#3D2C33]"
                   />
                 </label>
 
@@ -475,7 +484,7 @@ export const Lotes = () => {
                     name="estado"
                     value={formulario.estado}
                     onChange={manejarCambio}
-                    className="rounded-lg border border-doris-border p-3 font-normal"
+                    className="rounded-[10px] border-[1.5px] border-[#D9BCC8] bg-white p-3 font-normal text-[#3D2C33]"
                   >
                     <option value="Activo">Activo</option>
                     <option value="Inactivo">Inactivo</option>
@@ -490,7 +499,7 @@ export const Lotes = () => {
                     value={formulario.fecha_fabricacion}
                     onChange={manejarCambio}
                     required
-                    className="rounded-lg border border-doris-border p-3 font-normal"
+                    className="rounded-[10px] border-[1.5px] border-[#D9BCC8] bg-white p-3 font-normal text-[#3D2C33]"
                   />
                 </label>
 
@@ -502,7 +511,7 @@ export const Lotes = () => {
                     value={formulario.fecha_vencimiento}
                     onChange={manejarCambio}
                     required
-                    className="rounded-lg border border-doris-border p-3 font-normal"
+                    className="rounded-[10px] border-[1.5px] border-[#D9BCC8] bg-white p-3 font-normal text-[#3D2C33]"
                   />
                 </label>
 
@@ -516,7 +525,7 @@ export const Lotes = () => {
                     value={formulario.cantidad_inicial}
                     onChange={manejarCambio}
                     required
-                    className="rounded-lg border border-doris-border p-3 font-normal"
+                    className="rounded-[10px] border-[1.5px] border-[#D9BCC8] bg-white p-3 font-normal text-[#3D2C33]"
                   />
                 </label>
 
@@ -530,7 +539,7 @@ export const Lotes = () => {
                     value={formulario.cantidad_disponible}
                     onChange={manejarCambio}
                     required
-                    className="rounded-lg border border-doris-border p-3 font-normal"
+                    className="rounded-[10px] border-[1.5px] border-[#D9BCC8] bg-white p-3 font-normal text-[#3D2C33]"
                   />
                 </label>
 
@@ -542,7 +551,7 @@ export const Lotes = () => {
                     onChange={manejarCambio}
                     rows="3"
                     placeholder="Observaciones del lote..."
-                    className="resize-y rounded-lg border border-doris-border p-3 font-normal"
+                    className="resize-y rounded-[10px] border-[1.5px] border-[#D9BCC8] bg-white p-3 font-normal text-[#3D2C33]"
                   />
                 </label>
               </div>
@@ -551,14 +560,14 @@ export const Lotes = () => {
                 <button
                   type="button"
                   onClick={() => setModalAbierto(false)}
-                  className="rounded-xl border border-doris px-5 py-3 font-semibold text-doris hover:bg-doris-soft"
+                  className="rounded-[10px] border border-[#B83A6E] px-5 py-3 font-semibold text-[#B83A6E] hover:bg-[#F4D4E0]"
                 >
                   Cancelar
                 </button>
 
                 <button
                   type="submit"
-                  className="rounded-xl bg-doris px-5 py-3 font-semibold text-white hover:bg-doris-hover"
+                  className="rounded-[10px] bg-[#B83A6E] px-5 py-3 font-semibold text-white hover:brightness-90"
                 >
                   {editando !== null
                     ? "Guardar cambios"
@@ -569,6 +578,6 @@ export const Lotes = () => {
           </div>
         </div>
       )}
-    </main>
+    </section>
   );
 };
