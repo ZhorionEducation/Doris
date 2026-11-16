@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import Modal from '../../../routers/utils/modal'
 import PrivilegioForm from './privilegiosForm'
+import { PrivilegiosDetailModal } from './privilegiosDetailModal'
+import PrivilegioEdit from './privilegiosEditModal'
 
 const privilegios = [
   { id: 1, nombre: 'Consultar', descripcion: 'Permite visualizar la información de un módulo.' },
@@ -24,16 +26,17 @@ const control = `rounded-[10px] border-[1.5px] border-[#D9BCC8] bg-white px-3 py
 const iconBtn = `grid place-items-center rounded-[10px] border border-[#F4D4E0] bg-white text-[#B83A6E] hover:bg-[#F4D4E0] ${focus}`
 const celda = 'border-b border-[#F4D4E0] px-4 py-3'
 
-const Acciones = ({ size = 'h-9 w-9' }) => (
+const Acciones = ({ size = 'h-9 w-9', onView, onEdit }) => (
   <div className="flex gap-2">
-    <button type="button" title="Ver detalle" aria-label="Ver detalle" className={`${iconBtn} ${size}`}><IconEye /></button>
-    <button type="button" title="Editar" aria-label="Editar" className={`${iconBtn} ${size}`}><IconEdit /></button>
+    <button type="button" onClick={onView} title="Ver detalle" aria-label="Ver detalle" className={`${iconBtn} ${size}`}><IconEye /></button>
+    <button type="button" onClick={onEdit} title="Editar" aria-label="Editar" className={`${iconBtn} ${size}`}><IconEdit /></button>
     <button type="button" title="Eliminar" aria-label="Eliminar" className={`${iconBtn} ${size} !text-[#B3261E]`}><IconTrash /></button>
   </div>
 )
 
 export const Privilegios = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+  const [activeModal, setActiveModal] = useState(null)
 
   return (
     <section className="space-y-6 p-4 text-[15px] text-[#3D2C33] md:p-6">
@@ -60,7 +63,7 @@ export const Privilegios = () => {
               <td className={`${celda} whitespace-nowrap`}><code className="rounded-md bg-[#F4D4E0] px-1.5 py-0.5 font-mono text-[13px]">{privilegio.id}</code></td>
               <td className={`${celda} whitespace-nowrap font-semibold`}>{privilegio.nombre}</td>
               <td className={`${celda} text-[#6B5A64]`}>{privilegio.descripcion}</td>
-              <td className={`${celda} whitespace-nowrap`}><Acciones /></td>
+              <td className={`${celda} whitespace-nowrap`}><Acciones onView={() => setActiveModal('detail')} onEdit={() => setActiveModal('edit')} /></td>
             </tr>
           ))}</tbody>
         </table>
@@ -70,7 +73,7 @@ export const Privilegios = () => {
         <article key={privilegio.id} className="rounded-xl border border-[#F4D4E0] bg-white p-3.5">
           <header className="mb-2 flex items-center justify-between gap-2 font-bold"><span>{privilegio.nombre}</span><code className="rounded-md bg-[#F4D4E0] px-1.5 py-0.5 font-mono text-xs">{privilegio.id}</code></header>
           <p className="mb-3 text-sm text-[#6B5A64]">{privilegio.descripcion}</p>
-          <div className="flex justify-end"><Acciones size="h-11 w-11" /></div>
+          <div className="flex justify-end"><Acciones size="h-11 w-11" onView={() => setActiveModal('detail')} onEdit={() => setActiveModal('edit')} /></div>
         </article>
       ))}</div>
     </div>
@@ -80,6 +83,12 @@ export const Privilegios = () => {
           onCancel={() => setIsCreateModalOpen(false)}
           onSaved={() => setIsCreateModalOpen(false)}
         />
+      </Modal>
+    )}
+    {activeModal === 'detail' && <PrivilegiosDetailModal onClose={() => setActiveModal(null)} />}
+    {activeModal === 'edit' && (
+      <Modal title="Editar privilegio" onClose={() => setActiveModal(null)}>
+        <PrivilegioEdit onCancel={() => setActiveModal(null)} onSaved={() => setActiveModal(null)} />
       </Modal>
     )}
     </section>

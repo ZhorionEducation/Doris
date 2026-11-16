@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import Modal from '../../../routers/utils/modal'
 import UserForm from './usersForm'
+import { UsersDetailModal } from './usersDetailModal'
+import UserEdit from './usersEditModal'
 
 // Datos de ejemplo: solo para que el diseño se vea con información
 const usuarios = [
@@ -42,16 +44,17 @@ const Estado = ({ activo }) =>
   )
 
 // Botones de acciones (ver, editar, eliminar). size cambia entre escritorio y celular
-const Acciones = ({ size = 'h-9 w-9' }) => (
+const Acciones = ({ size = 'h-9 w-9', onView, onEdit }) => (
   <div className="flex gap-2">
-    <button type="button" title="Ver detalle" aria-label="Ver detalle" className={`${iconBtn} ${size}`}><IconEye /></button>
-    <button type="button" title="Editar" aria-label="Editar" className={`${iconBtn} ${size}`}><IconEdit /></button>
+    <button type="button" onClick={onView} title="Ver detalle" aria-label="Ver detalle" className={`${iconBtn} ${size}`}><IconEye /></button>
+    <button type="button" onClick={onEdit} title="Editar" aria-label="Editar" className={`${iconBtn} ${size}`}><IconEdit /></button>
     <button type="button" title="Eliminar" aria-label="Eliminar" className={`${iconBtn} ${size} !text-[#B3261E]`}><IconTrash /></button>
   </div>
 )
 
 const Users = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+  const [activeModal, setActiveModal] = useState(null)
 
   return (
     <section className="space-y-6 text-[15px] text-[#3D2C33]">
@@ -114,7 +117,7 @@ const Users = () => {
                   <td className="whitespace-nowrap border-b border-[#F4D4E0] px-4 py-3">{u.telefono}</td>
                   <td className="whitespace-nowrap border-b border-[#F4D4E0] px-4 py-3">{u.rol}</td>
                   <td className="whitespace-nowrap border-b border-[#F4D4E0] px-4 py-3"><Estado activo={u.activo} /></td>
-                  <td className="whitespace-nowrap border-b border-[#F4D4E0] px-4 py-3"><Acciones /></td>
+                  <td className="whitespace-nowrap border-b border-[#F4D4E0] px-4 py-3"><Acciones onView={() => setActiveModal('detail')} onEdit={() => setActiveModal('edit')} /></td>
                 </tr>
               ))}
             </tbody>
@@ -135,7 +138,7 @@ const Users = () => {
                 <dt className="text-[#6B5A64]">Teléfono</dt><dd className="text-right">{u.telefono}</dd>
                 <dt className="text-[#6B5A64]">Rol</dt><dd className="text-right">{u.rol}</dd>
               </dl>
-              <div className="flex justify-end"><Acciones size="h-11 w-11" /></div>
+              <div className="flex justify-end"><Acciones size="h-11 w-11" onView={() => setActiveModal('detail')} onEdit={() => setActiveModal('edit')} /></div>
             </article>
           ))}
         </div>
@@ -159,6 +162,12 @@ const Users = () => {
             onCancel={() => setIsCreateModalOpen(false)}
             onSaved={() => setIsCreateModalOpen(false)}
           />
+        </Modal>
+      )}
+      {activeModal === 'detail' && <UsersDetailModal onClose={() => setActiveModal(null)} />}
+      {activeModal === 'edit' && (
+        <Modal title="Editar usuario" onClose={() => setActiveModal(null)}>
+          <UserEdit onCancel={() => setActiveModal(null)} onSaved={() => setActiveModal(null)} />
         </Modal>
       )}
     </section>
