@@ -50,6 +50,10 @@ const rutas = {
   'Categorías de productos': '/categorias-productos',
   'Gestión de servicios': '/gestion-servicios',
   'Insumos de servicios': '/insumos-servicios',
+  'Ficha técnica': '/ficha-tecnica',
+  'Asignación de empleados': '/asignacion-empleados',
+  'Categoría de proveedores': '/categoria-proveedores',
+  'Gestión de productos': '/productos',
 }
 
 const focus = 'focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-[#6B4FA8]'

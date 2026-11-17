@@ -20,6 +20,10 @@ import { CategoriasProductos } from '../feature/pages/categoriasProductos/catego
 import { Roles } from '../feature/pages/roles/roles'
 import { GestionServicios } from '../feature/pages/gestionServicios/gestionServicios'
 import { InsumosServicios } from '../feature/pages/insumosServicios/insumosServicios'
+import { CategoriaProveedores } from '../feature/pages/proveedores/proveedores'
+import { Productos } from '../feature/pages/productos/productos'
+import { Asignaciones } from '../feature/pages/asignaciones/asignaciones'
+import { Fichas } from '../feature/pages/fichas/fichas'
 
 export const RouterApp = () => {
   return (
@@ -47,6 +51,10 @@ export const RouterApp = () => {
 <Route path="/roles" element={<Roles />} />
 <Route path="/gestion-servicios" element={<GestionServicios />} />
 <Route path="/insumos-servicios" element={<InsumosServicios />} />
+<Route path="/categoria-proveedores" element={<CategoriaProveedores/>} />
+        <Route path="/productos" element={<Productos/>} />
+        <Route path="/asignacion-empleados" element={<Asignaciones/>} />
+        <Route path="/ficha-tecnica" element={<Fichas/>} />
       </Route>
 
     </Routes>
