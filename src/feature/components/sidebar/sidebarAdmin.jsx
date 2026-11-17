@@ -35,6 +35,10 @@ const rutas = {
   'Gestión de usuarios': '/usuarios',
   'Gestión de compras': '/compras',
   'Gestión de pedidos': '/pedidos',
+  'Categorías de servicios': '/categoria-servicios',
+  Agenda: '/agenda',
+  'Devoluciones y anulaciones': '/devoluciones-anulaciones',
+  'Gestión de proveedores': '/gestion-proveedores',
 }
 
 const focus = 'focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-[#6B4FA8]'
