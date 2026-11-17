@@ -28,7 +28,6 @@ const procesos = [
   { nombre: 'Ventas', icono: <IconCash />, items: ['Gestión de clientes', 'Gestión de cotizaciones', 'Gestión de pedidos', 'Gestión de ventas', 'Devoluciones y anulaciones'] },
   { nombre: 'Medición y Desempeño', icono: <IconChart />, items: ['Indicadores'] },
 ]
-
 const rutas = {
   Privilegios: '/privilegios',
   Permisos: '/permisos',
@@ -36,6 +35,14 @@ const rutas = {
   'Gestión de usuarios': '/usuarios',
   'Gestión de compras': '/compras',
   'Gestión de pedidos': '/pedidos',
+  'Gestión de proveedores': '/gestion-proveedores',
+  'Categorías de servicios': '/categorias-servicios',
+  Agenda: '/agenda',
+  'Devoluciones y anulaciones': '/devoluciones-anulaciones',
+  'Gestión de lotes': '/lotes',
+  'Gestión de alergias': '/alergias',
+  'Ficha técnica de alergias': '/ficha-tecnica-alergias',
+  'Gestión de cotizaciones': '/cotizaciones',
   'Gestión de lotes': '/lotes',
   'Gestión de alergias': '/alergias',
   'Ficha técnica de alergias': '/ficha-tecnica-alergias',
