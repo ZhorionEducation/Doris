@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Routes, Navigate } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import Users from '../feature/pages/usuarios/users'
 import { Error404 } from '../feature/pages/errors/error404'
 import { Layout } from '../feature/pages/layouts/layoutAdmin/layout'
@@ -8,16 +8,16 @@ import { Pedidos } from '../feature/pages/pedidos/pedidos'
 import { Compras } from '../feature/pages/compras/compras'
 import { Privilegios } from '../feature/pages/privilegios/privilegios'
 import { Permisos } from '../feature/pages/permisos/permisos'
-import { Agenda } from '../feature/pages/agenda/agenda'
-import { CategoriaServicios } from '../feature/pages/categoria-servicios/categoriaServicios'
-import { DevolucionesAnulaciones } from '../feature/pages/devoluciones-anulaciones/devolucionesAnulaciones'
-import { GestionProveedores } from '../feature/pages/gestion-proveedores/gestionProveedores'
+import { Lotes } from '../feature/pages/lotes/lotes';
+import { Alergias } from '../feature/pages/alergias/alergias';
+import { FichaTecnicaAlergias } from '../feature/pages/fichaTecnicaAlergias/fichaTecnicaAlergias';
+import { Cotizaciones } from '../feature/pages/cotizaciones/cotizaciones';
 
 
 export const RouterApp = () => {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/compras" replace />} />
+      <Route path="/" element={<Login/>} />
       <Route path="*" element={<Error404/>} />
       <Route element={<Layout/>} >
         <Route path="/usuarios" element={<Users/>} />
@@ -25,10 +25,13 @@ export const RouterApp = () => {
         <Route path="/compras" element={<Compras/>} />
         <Route path="/privilegios" element={<Privilegios/>} />
         <Route path="/permisos" element={<Permisos/>} />
-        <Route path="/agenda" element={<Agenda/>} />
-        <Route path="/categoria-servicios" element={<CategoriaServicios/>} />
-        <Route path="/devoluciones-anulaciones" element={<DevolucionesAnulaciones/>} />
-        <Route path="/gestion-proveedores" element={<GestionProveedores/>} />
+        <Route path="/lotes" element={<Lotes />} />
+        <Route path="/alergias" element={<Alergias />} />
+        <Route
+  path="/ficha-tecnica-alergias"
+  element={<FichaTecnicaAlergias />}
+/>
+<Route path="/cotizaciones" element={<Cotizaciones />} />
       </Route>
 
     </Routes>
