@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import Modal from '../../../routers/utils/modal'
 import PermisoForm from './permisosForm'
+import { PermisosDetailModal } from './permisosDetailModal'
+import PermisoEdit from './permisosEditModal'
 
 // Datos de ejemplo: los permisos son los módulos del sistema (solo diseño)
 const permisos = [
@@ -47,16 +49,17 @@ const Roles = ({ lista }) => (
 )
 
 // Acciones: ver, editar y eliminar. size cambia entre escritorio y celular
-const Acciones = ({ size = 'h-9 w-9' }) => (
+const Acciones = ({ size = 'h-9 w-9', onView, onEdit }) => (
   <div className="flex gap-2">
-    <button type="button" title="Ver detalle" aria-label="Ver detalle" className={`${iconBtn} ${size}`}><IconEye /></button>
-    <button type="button" title="Editar" aria-label="Editar" className={`${iconBtn} ${size}`}><IconEdit /></button>
+    <button type="button" onClick={onView} title="Ver detalle" aria-label="Ver detalle" className={`${iconBtn} ${size}`}><IconEye /></button>
+    <button type="button" onClick={onEdit} title="Editar" aria-label="Editar" className={`${iconBtn} ${size}`}><IconEdit /></button>
     <button type="button" title="Eliminar" aria-label="Eliminar" className={`${iconBtn} ${size} !text-[#B3261E]`}><IconTrash /></button>
   </div>
 )
 
 export const Permisos = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+  const [activeModal, setActiveModal] = useState(null)
 
   return (
     <section className="space-y-6 text-[15px] text-[#3D2C33]">
@@ -117,7 +120,7 @@ export const Permisos = () => {
                   <td className={`${celda} whitespace-nowrap`}>{p.privilegio}</td>
                   <td className={`${celda} min-w-[200px]`}><Roles lista={p.roles} /></td>
                   <td className={`${celda} whitespace-nowrap`}><Estado activo={p.activo} /></td>
-                  <td className={`${celda} whitespace-nowrap`}><Acciones /></td>
+                  <td className={`${celda} whitespace-nowrap`}><Acciones onView={() => setActiveModal('detail')} onEdit={() => setActiveModal('edit')} /></td>
                 </tr>
               ))}
             </tbody>
@@ -137,7 +140,7 @@ export const Permisos = () => {
                 <dt className="text-[#6B5A64]">Privilegio</dt><dd className="text-right">{p.privilegio}</dd>
                 <dt className="text-[#6B5A64]">Roles</dt><dd className="flex justify-end"><Roles lista={p.roles} /></dd>
               </dl>
-              <div className="flex justify-end"><Acciones size="h-11 w-11" /></div>
+              <div className="flex justify-end"><Acciones size="h-11 w-11" onView={() => setActiveModal('detail')} onEdit={() => setActiveModal('edit')} /></div>
             </article>
           ))}
         </div>
@@ -159,6 +162,12 @@ export const Permisos = () => {
             onCancel={() => setIsCreateModalOpen(false)}
             onSaved={() => setIsCreateModalOpen(false)}
           />
+        </Modal>
+      )}
+      {activeModal === 'detail' && <PermisosDetailModal onClose={() => setActiveModal(null)} />}
+      {activeModal === 'edit' && (
+        <Modal title="Editar permiso" onClose={() => setActiveModal(null)}>
+          <PermisoEdit onCancel={() => setActiveModal(null)} onSaved={() => setActiveModal(null)} />
         </Modal>
       )}
     </section>

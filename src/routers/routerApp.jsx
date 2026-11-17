@@ -8,10 +8,6 @@ import { Pedidos } from '../feature/pages/pedidos/pedidos'
 import { Compras } from '../feature/pages/compras/compras'
 import { Privilegios } from '../feature/pages/privilegios/privilegios'
 import { Permisos } from '../feature/pages/permisos/permisos'
-import { Agenda } from '../feature/pages/agenda/agenda'
-import { CategoriaServicios } from '../feature/pages/categoria-servicios/categoriaServicios'
-import { DevolucionesAnulaciones } from '../feature/pages/devoluciones-anulaciones/devolucionesAnulaciones'
-import { GestionProveedores } from '../feature/pages/gestion-proveedores/gestionProveedores'
 
 
 export const RouterApp = () => {
@@ -25,10 +21,6 @@ export const RouterApp = () => {
         <Route path="/compras" element={<Compras/>} />
         <Route path="/privilegios" element={<Privilegios/>} />
         <Route path="/permisos" element={<Permisos/>} />
-        <Route path="/agenda" element={<Agenda/>} />
-        <Route path="/categoria-servicios" element={<CategoriaServicios/>} />
-        <Route path="/devoluciones-anulaciones" element={<DevolucionesAnulaciones/>} />
-        <Route path="/gestion-proveedores" element={<GestionProveedores/>} />
       </Route>
 
     </Routes>
