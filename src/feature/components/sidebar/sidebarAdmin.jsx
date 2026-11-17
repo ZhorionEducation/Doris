@@ -12,33 +12,33 @@ const IconFlower = () => (
   </Svg>
 )
 const IconChevron = () => <Svg className="h-5 w-5 transition-transform group-open:rotate-180"><path d="M6 9l6 6 6-6" /></Svg>
-const IconGear = () => <Svg><circle cx="12" cy="12" r="3.5" /><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1" /></Svg>
-const IconUsers = () => <Svg><circle cx="9" cy="8" r="3" /><path d="M3 20c.4-3.3 2.3-5 6-5s5.6 1.7 6 5M16 5.2a3 3 0 010 5.6M17 15c2.2.4 3.5 2 4 5" /></Svg>
-const IconBag = () => <Svg><path d="M6 7h12l1 13H5zM9 7a3 3 0 016 0" /></Svg>
-const IconLeaf = () => <Svg><path d="M5 19c0-8 5-14 14-14 0 9-6 14-14 14zM5 19l8-8" /></Svg>
-const IconCash = () => <Svg><rect x="3" y="6" width="18" height="12" rx="2" /><circle cx="12" cy="12" r="3" /></Svg>
-const IconChart = () => <Svg><path d="M4 20h16M7 20v-6M12 20V6M17 20v-9" /></Svg>
+const IconGear    = () => <Svg><circle cx="12" cy="12" r="3.5" /><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1" /></Svg>
+const IconUsers   = () => <Svg><circle cx="9" cy="8" r="3" /><path d="M3 20c.4-3.3 2.3-5 6-5s5.6 1.7 6 5M16 5.2a3 3 0 010 5.6M17 15c2.2.4 3.5 2 4 5" /></Svg>
+const IconBag     = () => <Svg><path d="M6 7h12l1 13H5zM9 7a3 3 0 016 0" /></Svg>
+const IconLeaf    = () => <Svg><path d="M5 19c0-8 5-14 14-14 0 9-6 14-14 14zM5 19l8-8" /></Svg>
+const IconCash    = () => <Svg><rect x="3" y="6" width="18" height="12" rx="2" /><circle cx="12" cy="12" r="3" /></Svg>
+const IconChart   = () => <Svg><path d="M4 20h16M7 20v-6M12 20V6M17 20v-9" /></Svg>
 
-// Macroprocesos y subprocesos de DORIS. "activo" marca la opción donde está el usuario (solo diseño)
+// Macroprocesos y subprocesos de DORIS
 const procesos = [
-  { nombre: 'Configuración', icono: <IconGear />, items: ['Privilegios', 'Permisos'] },
-  { nombre: 'Usuarios', icono: <IconUsers />, items: ['Gestión de usuarios'] },
-  { nombre: 'Compras', icono: <IconBag />, items: ['Categoría de proveedores', 'Gestión de proveedores', 'Categorías de productos', 'Gestión de productos', 'Gestión de compras', 'Gestión de lotes'] },
-  { nombre: 'Servicios', icono: <IconLeaf />, items: ['Categorías de servicios', 'Gestión de servicios', 'Ficha técnica', 'Insumos de servicios', 'Asignación de empleados', 'Agenda', 'Gestión de alergias', 'Ficha técnica de alergias'] },
-  { nombre: 'Ventas', icono: <IconCash />, items: ['Gestión de clientes', 'Gestión de cotizaciones', 'Gestión de pedidos', 'Gestión de ventas', 'Devoluciones y anulaciones'] },
+  { nombre: 'Configuración',        icono: <IconGear />,  items: ['Privilegios', 'Permisos'] },
+  { nombre: 'Usuarios',             icono: <IconUsers />, items: ['Gestión de usuarios'] },
+  { nombre: 'Compras',              icono: <IconBag />,   items: ['Categoría de proveedores', 'Gestión de proveedores', 'Categorías de productos', 'Gestión de productos', 'Gestión de compras', 'Gestión de lotes'] },
+  { nombre: 'Servicios',            icono: <IconLeaf />,  items: ['Categorías de servicios', 'Gestión de servicios', 'Ficha técnica', 'Insumos de servicios', 'Asignación de empleados', 'Agenda', 'Gestión de alergias', 'Ficha técnica de alergias'] },
+  { nombre: 'Ventas',               icono: <IconCash />,  items: ['Gestión de clientes', 'Gestión de cotizaciones', 'Gestión de pedidos', 'Gestión de ventas', 'Devoluciones y anulaciones'] },
   { nombre: 'Medición y Desempeño', icono: <IconChart />, items: ['Indicadores'] },
 ]
 
 const rutas = {
-  Privilegios: '/privilegios',
-  Permisos: '/permisos',
-  'Gestión de usuarios': '/usuarios',
-  'Gestión de compras': '/compras',
-  'Gestión de pedidos': '/pedidos',
-   'Gestión de lotes': '/lotes',
-   'Gestión de alergias': '/alergias',
-   'Ficha técnica de alergias': '/ficha-tecnica-alergias',
-   'Gestión de cotizaciones': '/cotizaciones',
+  Privilegios:                   '/privilegios',
+  Permisos:                      '/permisos',
+  'Gestión de usuarios':         '/usuarios',
+  'Gestión de compras':          '/compras',
+  'Gestión de pedidos':          '/pedidos',
+  'Gestión de proveedores':      '/gestion-proveedores',
+  'Categorías de servicios':     '/categoria-servicios',
+  Agenda:                        '/agenda',
+  'Devoluciones y anulaciones':  '/devoluciones-anulaciones',
 }
 
 const focus = 'focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-[#6B4FA8]'
@@ -66,7 +66,7 @@ const SidebarAdmin = () => {
 
       <p className="px-3 py-2 text-[13px] font-semibold text-[#6B5A64]">Procesos</p>
 
-      {/* Macroprocesos (se abren y cierran con details, sin código) */}
+      {/* Macroprocesos (se abren y cierran con details) */}
       <nav className="space-y-0.5">
         {procesos.map((p) => {
           const procesoActivo = p.items.some((item) => rutas[item] === pathname)
