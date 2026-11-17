@@ -12,6 +12,10 @@ import { Lotes } from '../feature/pages/lotes/lotes';
 import { Alergias } from '../feature/pages/alergias/alergias';
 import { FichaTecnicaAlergias } from '../feature/pages/fichaTecnicaAlergias/fichaTecnicaAlergias';
 import { Cotizaciones } from '../feature/pages/cotizaciones/cotizaciones';
+import { DevolucionesAnulaciones } from '../feature/pages/devoluciones-anulaciones/devolucionesAnulaciones'
+import { CategoriaServicios } from '../feature/pages/categoria-servicios/categoriaServicios'
+import { Agenda } from '../feature/pages/agenda/agenda'
+import { GestionProveedores } from '../feature/pages/gestion-proveedores/gestionProveedores'
 
 
 export const RouterApp = () => {
@@ -27,6 +31,11 @@ export const RouterApp = () => {
         <Route path="/permisos" element={<Permisos/>} />
         <Route path="/lotes" element={<Lotes />} />
         <Route path="/alergias" element={<Alergias />} />
+        <Route path="/devoluciones-anulaciones" element={<DevolucionesAnulaciones />} />
+        <Route path="/categorias-servicios" element={<CategoriaServicios />} />
+        <Route path="/agenda" element={<Agenda />} />
+        <Route path="/gestion-proveedores" element={<GestionProveedores />} />
+
         <Route
   path="/ficha-tecnica-alergias"
   element={<FichaTecnicaAlergias />}
