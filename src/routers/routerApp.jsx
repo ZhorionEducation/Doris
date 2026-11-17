@@ -17,7 +17,7 @@ import { GestionProveedores } from '../feature/pages/gestion-proveedores/gestion
 export const RouterApp = () => {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/compras" replace />} />
+      <Route path="/" element={<Login/>} />
       <Route path="*" element={<Error404/>} />
       <Route element={<Layout/>} >
         <Route path="/usuarios" element={<Users/>} />
