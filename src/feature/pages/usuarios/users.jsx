@@ -1,17 +1,60 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Modal from '../../../routers/utils/modal'
 import UserForm from './usersForm'
 import { UsersDetailModal } from './usersDetailModal'
 import UserEdit from './usersEditModal'
+import axios from 'axios'
+
+const estaActivo = (estado) => {
+  if (typeof estado === 'boolean') return estado
+  if (typeof estado === 'number') return estado === 1
+
+  const valor = String(estado ?? '')
+    .trim()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+
+  return ['activo', '1', 'true', 'si', 'enabled', 'active'].includes(valor)
+}
+
+const fetchUsuarios = async (page) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:5000/api/users?page=${page}&limit=10`
+    );
+
+    return {
+      usuarios: response.data.data.map((usuario) => ({
+        documento: usuario.numero_documento,
+        nombres: usuario.nombres,
+        apellidos: usuario.apellidos,
+        email: usuario.email,
+        telefono: usuario.telefono,
+        rol: usuario.rol_codigo,
+        alergia: usuario.alergias,
+        activo: estaActivo(usuario.estado)
+      })),
+      pagination: response.data.pagination
+    };
+  } catch (error) {
+    console.error(
+      "Error fetching usuarios:",
+      error.response?.data || error.message
+    );
+
+    return {
+      usuarios: [],
+      pagination: null
+    };
+  }
+};
+
+
+
+
 
 // Datos de ejemplo: solo para que el diseño se vea con información
-const usuarios = [
-  { documento: '43215678', nombres: 'Laura', apellidos: 'Gómez Restrepo', email: 'laura.gomez@doris.com', telefono: '3104567890', rol: 'Administrador', activo: true },
-  { documento: '1020456789', nombres: 'Andrés', apellidos: 'Ríos Londoño', email: 'andres.rios@doris.com', telefono: '3115678901', rol: 'Vendedor', activo: true },
-  { documento: '1036789012', nombres: 'Marcela', apellidos: 'Torres Salazar', email: 'marcela.torres@doris.com', telefono: '3126789012', rol: 'Vendedor', activo: false },
-  { documento: '71654321', nombres: 'Camilo', apellidos: 'Herrera Díaz', email: 'camilo.herrera@doris.com', telefono: '3137890123', rol: 'Auxiliar de compras', activo: true },
-  { documento: '1017890123', nombres: 'Sebastián', apellidos: 'Muñoz Osorio', email: 'sebastian.munoz@gmail.com', telefono: '3148901234', rol: 'Cliente', activo: true },
-]
 
 // Iconos de línea (trazo 1.8, 20 x 20)
 const Svg = ({ children, className = 'h-5 w-5' }) => (
@@ -33,7 +76,7 @@ const control = `rounded-[10px] border-[1.5px] border-[#D9BCC8] bg-white px-3 py
 const iconBtn = `grid place-items-center rounded-[10px] border border-[#F4D4E0] bg-white text-[#B83A6E] hover:bg-[#F4D4E0] ${focus}`
 
 const Estado = ({ activo }) =>
-  activo ? (
+  estaActivo(activo) ? (
     <span className="inline-flex items-center gap-1.5 rounded-full bg-[#E3F3EA] px-2.5 py-0.5 text-[13px] font-semibold text-[#1F5A43]">
       <IconOk /> Activo
     </span>
@@ -56,14 +99,28 @@ const Users = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
   const [activeModal, setActiveModal] = useState(null)
 
+  const [usuarios, setUsuarios] = useState([])
+  const [currentPage, setCurrentPage] = useState(1)
+  const [pagination, setPagination] = useState(null)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { usuarios: usuariosData, pagination: paginationData } =
+        await fetchUsuarios(currentPage);
+
+      setUsuarios(usuariosData);
+      setPagination(paginationData);
+    };
+    fetchData();
+  }, [currentPage]);
+
   return (
-    <section className="space-y-6 text-[15px] text-[#3D2C33]">
+    <section className="mx-auto max-w-[1800px] space-y-6 px-6 py-8 text-[15px] text-[#3D2C33] md:px-10 md:py-10">
       {/* Encabezado */}
       <header>
-        <p className="text-[13px] text-[#6B5A64]">Inicio › Usuarios › Gestión de usuarios</p>
         <h1 className="text-2xl font-bold leading-tight md:text-[28px]">Gestión de usuarios</h1>
         <p className="mt-1 max-w-[70ch] text-[#6B5A64]">
-          Administra las cuentas del personal y de los clientes. El rol define qué puede hacer cada persona.
+          Administra las cuentas del personal y de los clientes.
         </p>
       </header>
 
@@ -102,6 +159,7 @@ const Users = () => {
                 <th className="border-b border-[#F4D4E0] px-4 py-3">Correo</th>
                 <th className="border-b border-[#F4D4E0] px-4 py-3">Teléfono</th>
                 <th className="border-b border-[#F4D4E0] px-4 py-3">Rol</th>
+                <th className="border-b border-[#F4D4E0] px-4 py-3">Alergia</th>
                 <th className="border-b border-[#F4D4E0] px-4 py-3">Estado</th>
                 <th className="border-b border-[#F4D4E0] px-4 py-3">Acciones</th>
               </tr>
@@ -116,7 +174,10 @@ const Users = () => {
                   <td className="whitespace-nowrap border-b border-[#F4D4E0] px-4 py-3">{u.email}</td>
                   <td className="whitespace-nowrap border-b border-[#F4D4E0] px-4 py-3">{u.telefono}</td>
                   <td className="whitespace-nowrap border-b border-[#F4D4E0] px-4 py-3">{u.rol}</td>
-                  <td className="whitespace-nowrap border-b border-[#F4D4E0] px-4 py-3"><Estado activo={u.activo} /></td>
+                  <td className="whitespace-nowrap border-b border-[#F4D4E0] px-4 py-3">{u.alergia}</td>
+                  <td className="whitespace-nowrap border-b border-[#F4D4E0] px-4 py-3">
+                    <Estado activo={u.activo} />
+                  </td>
                   <td className="whitespace-nowrap border-b border-[#F4D4E0] px-4 py-3"><Acciones onView={() => setActiveModal('detail')} onEdit={() => setActiveModal('edit')} /></td>
                 </tr>
               ))}
@@ -130,13 +191,15 @@ const Users = () => {
             <article key={u.documento} className="rounded-xl border border-[#F4D4E0] bg-white p-3.5">
               <header className="mb-2 flex items-center justify-between gap-2 font-bold">
                 <span>{u.nombres} {u.apellidos}</span>
-                <Estado activo={u.activo} />
               </header>
               <dl className="mb-3 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-sm">
                 <dt className="text-[#6B5A64]">Documento</dt><dd className="text-right">{u.documento}</dd>
                 <dt className="text-[#6B5A64]">Correo</dt><dd className="break-all text-right">{u.email}</dd>
                 <dt className="text-[#6B5A64]">Teléfono</dt><dd className="text-right">{u.telefono}</dd>
                 <dt className="text-[#6B5A64]">Rol</dt><dd className="text-right">{u.rol}</dd>
+                <dt className="text-[#6B5A64]">Alergia</dt><dd className="text-right">{u.alergia}</dd>
+                <dt className="text-[#6B5A64]">Estado</dt>
+                <dd className="text-right"><Estado activo={u.activo} /></dd>
               </dl>
               <div className="flex justify-end"><Acciones size="h-11 w-11" onView={() => setActiveModal('detail')} onEdit={() => setActiveModal('edit')} /></div>
             </article>
@@ -145,13 +208,28 @@ const Users = () => {
 
         {/* Paginación */}
         <div className="flex flex-wrap items-center justify-between gap-3 p-4 text-sm text-[#6B5A64]">
-          <span>Mostrando 1 a 5 de 24 usuarios</span>
+          <span>
+            {pagination
+              ? `Mostrando página ${pagination.page} de ${pagination.totalPages} (${pagination.total} usuarios)`
+              : 'No hay información de paginación'}
+          </span>
           <div className="flex gap-1">
-            <button type="button" disabled aria-label="Página anterior" className={`h-9 min-w-9 rounded-[10px] border border-[#F4D4E0] bg-white font-semibold opacity-45 ${focus}`}>‹</button>
-            <button type="button" aria-current="page" className={`h-9 min-w-9 rounded-[10px] border border-[#B83A6E] bg-[#B83A6E] font-semibold text-white ${focus}`}>1</button>
-            <button type="button" className={`h-9 min-w-9 rounded-[10px] border border-[#F4D4E0] bg-white font-semibold text-[#3D2C33] hover:bg-[#F4D4E0] ${focus}`}>2</button>
-            <button type="button" className={`h-9 min-w-9 rounded-[10px] border border-[#F4D4E0] bg-white font-semibold text-[#3D2C33] hover:bg-[#F4D4E0] ${focus}`}>3</button>
-            <button type="button" aria-label="Página siguiente" className={`h-9 min-w-9 rounded-[10px] border border-[#F4D4E0] bg-white font-semibold text-[#3D2C33] hover:bg-[#F4D4E0] ${focus}`}>›</button>
+            <button type="button" disabled={!pagination || currentPage === 1} onClick={() => setCurrentPage((page) => page - 1)} aria-label="Página anterior" className={`h-9 min-w-9 rounded-[10px] border border-[#F4D4E0] bg-white font-semibold disabled:opacity-45 ${focus}`}>‹</button>
+            {pagination && Array.from(
+              { length: pagination.totalPages },
+              (_, index) => index + 1
+            ).map((page) => (
+              <button
+                key={page}
+                type="button"
+                onClick={() => setCurrentPage(page)}
+                aria-current={currentPage === page ? 'page' : undefined}
+                className={`h-9 min-w-9 rounded-[10px] border ${currentPage === page ? 'border-[#B83A6E] bg-[#B83A6E] text-white' : 'border-[#F4D4E0] bg-white text-[#3D2C33] hover:bg-[#F4D4E0]'} font-semibold ${focus}`}
+              >
+                {page}
+              </button>
+            ))}
+            <button type="button" disabled={!pagination || currentPage === pagination.totalPages} onClick={() => setCurrentPage((page) => page + 1)} aria-label="Página siguiente" className={`h-9 min-w-9 rounded-[10px] border border-[#F4D4E0] bg-white font-semibold disabled:opacity-45 ${focus}`}>›</button>
           </div>
         </div>
       </div>
