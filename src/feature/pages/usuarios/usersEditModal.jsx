@@ -22,9 +22,7 @@ const UserEdit = ({ onCancel, onSaved }) => {
   return (
     <section className="space-y-6 text-[15px] text-[#3D2C33]">
       <header>
-        <p className="text-[13px] text-[#6B5A64]">Inicio › Usuarios › Gestión de usuarios › Editar usuario</p>
-        <h1 className="text-2xl font-bold leading-tight md:text-[28px]">Editar usuario</h1>
-        <p className="mt-1 max-w-[70ch] text-[#6B5A64]">Modifica los datos que necesites. El documento no se puede cambiar porque identifica a la persona.</p>
+        <p className="mt-1 max-w-[70ch] ml-5 text-[#6B5A64]">Modifica los datos que necesites. El documento no se puede cambiar porque identifica a la persona.</p>
       </header>
 
       <form onSubmit={handleSubmit} className="rounded-xl border border-[#F4D4E0] bg-white">

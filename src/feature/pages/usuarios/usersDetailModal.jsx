@@ -8,6 +8,7 @@ const usuario = {
   apellidos: 'Ríos Londoño',
   email: 'andres.rios@doris.com',
   telefono: '3115678901',
+  alergia: 'Ninguna',
   direccion: 'Cl 33 #65-10',
   rol: 'Vendedor',
   ingreso: '10/05/2022',
@@ -66,6 +67,7 @@ export const UsersDetailModal = ({ onClose }) => {
             <dl className="grid gap-x-6 gap-y-3 sm:grid-cols-2">
               <Dato etiqueta="Tipo de documento">{usuario.tipo}</Dato>
               <Dato etiqueta="Número de documento">{usuario.documento}</Dato>
+              <Dato etiqueta="Alergia">{usuario.alergia}</Dato>
               <Dato etiqueta="Teléfono">{usuario.telefono}</Dato>
               <Dato etiqueta="Dirección">{usuario.direccion}</Dato>
             </dl>

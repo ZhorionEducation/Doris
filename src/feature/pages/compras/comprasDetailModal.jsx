@@ -1,7 +1,7 @@
 import React from 'react'
 
 // Datos de ejemplo de la compra N.º 1 (solo diseño)
-const compra = {
+const compraEjemplo = {
   id: 1,
   estado: 'Recibida',
   proveedor: 'Distribuidora Cosmética Andina S.A.S.',
@@ -11,6 +11,10 @@ const compra = {
   entrega: '04/11/2026',
   bodega: 'Bodega principal',
   observaciones: 'Reposición mensual de cremas y mascarillas.',
+  subtotal: '1010000.00',
+  iva: '191900.00',
+  total: '1201900.00',
+  porcentajeIva: 19,
 }
 const productos = [
   { sku: 'CRE-001', nombre: 'Crema hidratante facial 250 ml', cantidad: 20, valor: '$ 28.000', subtotal: '$ 560.000' },
@@ -34,7 +38,26 @@ const Dato = ({ etiqueta, children }) => (
   </div>
 )
 
-export const ComprasDetailModal = ({ onClose }) => {
+export const ComprasDetailModal = ({ compra, onClose }) => {
+  const compraSeleccionada = compra
+    ? {
+        ...compra,
+        nit: String(compra.proveedorId),
+        fecha: compra.fecha,
+        entrega: compra.entrega
+      }
+    : compraEjemplo
+  const formatearDinero = (valor) =>
+    new Intl.NumberFormat('es-CO', {
+      style: 'currency',
+      currency: 'COP',
+      maximumFractionDigits: 0
+    }).format(Number(valor) || 0)
+  const porcentajeIva =
+    compraSeleccionada.porcentajeIva ??
+    (Number(compraSeleccionada.subtotal) > 0
+      ? Number(((Number(compraSeleccionada.iva) / Number(compraSeleccionada.subtotal)) * 100).toFixed(2))
+      : 19)
   return (
     // Fondo oscuro que cubre toda la pantalla
     <div className="fixed inset-0 z-50 grid place-items-center bg-[#3D2C33]/60 p-3 sm:p-4">
@@ -49,9 +72,9 @@ export const ComprasDetailModal = ({ onClose }) => {
           <div>
             <p className="text-[13px] text-[#6B5A64]">Detalle de la compra</p>
             <h2 id="compra-titulo" className="flex flex-wrap items-center gap-3 text-xl font-bold md:text-2xl">
-              Compra N.º {compra.id}
+              Compra N.º {compraSeleccionada.id}
               <span className="inline-flex items-center gap-1.5 rounded-full bg-[#E3F3EA] px-2.5 py-0.5 text-[13px] font-semibold text-[#1F5A43]">
-                <IconCheck /> {compra.estado}
+                <IconCheck /> {compraSeleccionada.estado}
               </span>
             </h2>
           </div>
@@ -66,14 +89,14 @@ export const ComprasDetailModal = ({ onClose }) => {
           <section aria-label="Datos generales">
             <h3 className="mb-3 text-lg font-semibold">Datos generales</h3>
             <dl className="grid gap-x-6 gap-y-3 sm:grid-cols-2">
-              <Dato etiqueta="Proveedor">{compra.proveedor}</Dato>
-              <Dato etiqueta="NIT">{compra.nit}</Dato>
-              <Dato etiqueta="Encargado">{compra.encargado}</Dato>
-              <Dato etiqueta="Bodega de destino">{compra.bodega}</Dato>
-              <Dato etiqueta="Fecha de compra">{compra.fecha}</Dato>
-              <Dato etiqueta="Fecha de entrega">{compra.entrega}</Dato>
+              <Dato etiqueta="Proveedor">{compraSeleccionada.proveedor}</Dato>
+              <Dato etiqueta="NIT">{compraSeleccionada.nit}</Dato>
+              <Dato etiqueta="Encargado">{compraSeleccionada.encargado}</Dato>
+              <Dato etiqueta="Bodega de destino">{compraSeleccionada.bodega}</Dato>
+              <Dato etiqueta="Fecha de compra">{compraSeleccionada.fecha}</Dato>
+              <Dato etiqueta="Fecha de entrega">{compraSeleccionada.entrega}</Dato>
               <div className="sm:col-span-2">
-                <Dato etiqueta="Observaciones"><span className="font-normal">{compra.observaciones}</span></Dato>
+                <Dato etiqueta="Observaciones"><span className="font-normal">{compraSeleccionada.observaciones || 'Sin observaciones'}</span></Dato>
               </div>
             </dl>
           </section>
@@ -130,10 +153,10 @@ export const ComprasDetailModal = ({ onClose }) => {
           {/* Resumen de valores */}
           <section aria-label="Resumen de valores">
             <dl className="ml-auto grid max-w-sm grid-cols-[1fr_auto] gap-x-6 gap-y-2">
-              <dt className="text-[#6B5A64]">Subtotal</dt><dd className="text-right font-semibold tabular-nums">$ 1.010.000</dd>
-              <dt className="text-[#6B5A64]">IVA (19 %)</dt><dd className="text-right font-semibold tabular-nums">$ 191.900</dd>
+              <dt className="text-[#6B5A64]">Subtotal</dt><dd className="text-right font-semibold tabular-nums">{formatearDinero(compraSeleccionada.subtotal)}</dd>
+              <dt className="text-[#6B5A64]">IVA ({porcentajeIva} %)</dt><dd className="text-right font-semibold tabular-nums">{formatearDinero(compraSeleccionada.iva)}</dd>
               <dt className="mt-1 border-t border-[#F4D4E0] pt-3 text-lg font-bold">Total</dt>
-              <dd className="mt-1 border-t border-[#F4D4E0] pt-3 text-right text-lg font-bold tabular-nums text-[#B83A6E]">$ 1.201.900</dd>
+              <dd className="mt-1 border-t border-[#F4D4E0] pt-3 text-right text-lg font-bold tabular-nums text-[#B83A6E]">{formatearDinero(compraSeleccionada.total)}</dd>
             </dl>
           </section>
         </div>

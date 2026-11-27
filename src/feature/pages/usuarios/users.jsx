@@ -69,6 +69,7 @@ const IconTrash = () => <Svg><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14" /></Sv
 const IconSearch = () => <Svg><circle cx="11" cy="11" r="7" /><path d="M20 20l-4-4" /></Svg>
 const IconOk = () => <Svg className="h-3.5 w-3.5"><circle cx="12" cy="12" r="9" /><path d="M8 12l3 3 5-6" /></Svg>
 const IconOff = () => <Svg className="h-3.5 w-3.5"><circle cx="12" cy="12" r="9" /><path d="M9 9l6 6M15 9l-6 6" /></Svg>
+const IconReport = () => <Svg><path d="M4 4h16v16H4z" /><path d="M8 2v4M16 2v4M4 8h16" /></Svg>
 
 // Clases que se repiten
 const focus = 'focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-[#6B4FA8]'
@@ -91,7 +92,7 @@ const Acciones = ({ size = 'h-9 w-9', onView, onEdit }) => (
   <div className="flex gap-2">
     <button type="button" onClick={onView} title="Ver detalle" aria-label="Ver detalle" className={`${iconBtn} ${size}`}><IconEye /></button>
     <button type="button" onClick={onEdit} title="Editar" aria-label="Editar" className={`${iconBtn} ${size}`}><IconEdit /></button>
-    <button type="button" title="Eliminar" aria-label="Eliminar" className={`${iconBtn} ${size} !text-[#B3261E]`}><IconTrash /></button>
+    {/* <button type="button" title="Eliminar" aria-label="Eliminar" className={`${iconBtn} ${size} !text-[#B3261E]`}><IconTrash /></button> */}
   </div>
 )
 
@@ -144,6 +145,9 @@ const Users = () => {
             <option>Activo</option>
             <option>Inactivo</option>
           </select>
+          <button type="button" className={`inline-flex items-center gap-2 rounded-[10px] bg-[#B83A6E] px-4 py-2.5 text-sm font-semibold text-white hover:brightness-90 ${focus}`}>
+            <IconReport /> Generar reporte
+          </button>
           <button type="button" onClick={() => setIsCreateModalOpen(true)} className={`inline-flex items-center gap-2 rounded-[10px] bg-[#B83A6E] px-4 py-2.5 text-sm font-semibold text-white hover:brightness-90 ${focus}`}>
             <IconPlus /> Crear usuario
           </button>
@@ -157,9 +161,9 @@ const Users = () => {
                 <th className="border-b border-[#F4D4E0] px-4 py-3">Documento</th>
                 <th className="border-b border-[#F4D4E0] px-4 py-3">Nombre</th>
                 <th className="border-b border-[#F4D4E0] px-4 py-3">Correo</th>
-                <th className="border-b border-[#F4D4E0] px-4 py-3">Teléfono</th>
+                
                 <th className="border-b border-[#F4D4E0] px-4 py-3">Rol</th>
-                <th className="border-b border-[#F4D4E0] px-4 py-3">Alergia</th>
+                
                 <th className="border-b border-[#F4D4E0] px-4 py-3">Estado</th>
                 <th className="border-b border-[#F4D4E0] px-4 py-3">Acciones</th>
               </tr>
@@ -172,9 +176,9 @@ const Users = () => {
                   </td>
                   <td className="whitespace-nowrap border-b border-[#F4D4E0] px-4 py-3 font-semibold">{u.nombres} {u.apellidos}</td>
                   <td className="whitespace-nowrap border-b border-[#F4D4E0] px-4 py-3">{u.email}</td>
-                  <td className="whitespace-nowrap border-b border-[#F4D4E0] px-4 py-3">{u.telefono}</td>
+                  
                   <td className="whitespace-nowrap border-b border-[#F4D4E0] px-4 py-3">{u.rol}</td>
-                  <td className="whitespace-nowrap border-b border-[#F4D4E0] px-4 py-3">{u.alergia}</td>
+                 
                   <td className="whitespace-nowrap border-b border-[#F4D4E0] px-4 py-3">
                     <Estado activo={u.activo} />
                   </td>
