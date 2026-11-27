@@ -32,7 +32,7 @@ export const Login = () => {
 
   const submitForm = (e) => {
     e.preventDefault()
-    navigate('/permisos')
+    navigate('/usuarios')
   }
 
   return (

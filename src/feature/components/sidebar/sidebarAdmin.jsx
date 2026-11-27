@@ -21,7 +21,7 @@ const IconChart = () => <Svg><path d="M4 20h16M7 20v-6M12 20V6M17 20v-9" /></Svg
 
 // Macroprocesos y subprocesos de DORIS. "activo" marca la opción donde está el usuario (solo diseño)
 const procesos = [
-  { nombre: 'Configuración', icono: <IconGear />, items: ['Privilegios', 'Permisos', 'Roles'] },
+  { nombre: 'Configuración', icono: <IconGear />, items: [ 'Roles'] },
   { nombre: 'Usuarios', icono: <IconUsers />, items: ['Gestión de usuarios'] },
   { nombre: 'Compras', icono: <IconBag />, items: ['Categoría de proveedores', 'Gestión de proveedores', 'Categorías de productos', 'Gestión de productos', 'Gestión de compras', 'Gestión de lotes'] },
   { nombre: 'Servicios', icono: <IconLeaf />, items: ['Categorías de servicios', 'Gestión de servicios', 'Ficha técnica', 'Insumos de servicios', 'Asignación de empleados', 'Agenda', 'Gestión de alergias', 'Ficha técnica de alergias'] },
@@ -29,8 +29,8 @@ const procesos = [
   { nombre: 'Medición y Desempeño', icono: <IconChart />, items: ['Indicadores'] },
 ]
 const rutas = {
-  Privilegios: '/privilegios',
-  Permisos: '/permisos',
+  // Privilegios: '/privilegios',
+  // Permisos: '/permisos',
   Roles: '/roles',
   'Gestión de usuarios': '/usuarios',
   'Gestión de compras': '/compras',
